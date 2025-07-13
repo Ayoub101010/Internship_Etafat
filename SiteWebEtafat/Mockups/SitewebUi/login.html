@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GeoCollect - Connexion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts & Icons -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+      :root {
+        --primary: #00bcd4;
+        --secondary: #4caf50;
+        --glass-bg: rgba(255, 255, 255, 0.15);
+        --glass-border: rgba(255, 255, 255, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+      }
+
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #map {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 0;
+        filter: brightness(0.7) blur(2px);
+      }
+
+      .overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        opacity: 0.3;
+        z-index: 1;
+      }
+
+      .language-switch {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        z-index: 3;
+      }
+
+      .language-switch select {
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: none;
+        background: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+      }
+
+      .form-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(16px);
+        border-radius: 20px;
+        padding: 40px 30px;
+        color: #fff;
+        z-index: 2;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        gap: 10px;
+      }
+
+      .logo img {
+        width: 35px;
+      }
+
+      .logo h2 {
+        font-size: 22px;
+      }
+
+      .tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 25px;
+        gap: 20px;
+      }
+
+      .tabs button {
+        background: none;
+        border: none;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 6px 14px;
+        border-bottom: 2px solid transparent;
+        font-size: 16px;
+      }
+
+      .tabs button.active {
+        border-color: #fff;
+      }
+
+      form {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      form.active {
+        display: flex;
+      }
+
+      .input-box {
+        position: relative;
+      }
+
+      .input-box input {
+        width: 100%;
+        padding: 12px 15px;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+      }
+
+      .input-box input::placeholder {
+        color: #eee;
+      }
+
+      .form-container button.submit-btn {
+        background: #fff;
+        color: #333;
+        font-weight: bold;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .form-container .extra {
+        text-align: center;
+        font-size: 13px;
+        margin-top: 10px;
+      }
+
+      @media screen and (max-width: 480px) {
+        .form-container {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div class="overlay"></div>
+
+    <!-- Sélecteur de langue -->
+    <div class="language-switch">
+      <select id="language">
+        <option value="fr">🇫🇷 Français</option>
+        <option value="en">🇬🇧 English</option>
+      </select>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="form-container">
+      <div class="logo">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/684/684908.png"
+          alt="GeoLogo"
+        />
+        <h2>GeoCollect</h2>
+      </div>
+
+      <div class="tabs">
+        <button id="signInTab" class="active">Connexion</button>
+        <button id="signUpTab">Créer un compte</button>
+      </div>
+
+      <!-- Form Connexion -->
+      <form id="signInForm" class="active">
+        <div class="input-box">
+          <input type="text" placeholder="Nom d'utilisateur" required />
+        </div>
+        <div class="input-box">
+          <input type="password" placeholder="Mot de passe" required />
+        </div>
+        <button class="submit-btn" type="submit">Se connecter</button>
+        <div class="extra">
+          <a href="#">Mot de passe oublié ?</a>
+        </div>
+      </form>
+
+      <!-- Form Inscription -->
+      <form id="signUpForm">
+        <div class="input-box">
+          <input type="text" placeholder="Nom complet" required />
+        </div>
+        <div class="input-box">
+          <input type="email" placeholder="Adresse e-mail" required />
+        </div>
+        <div class="input-box">
+          <input type="password" placeholder="Mot de passe" required />
+        </div>
+        <button class="submit-btn" type="submit">S'inscrire</button>
+      </form>
+    </div>
+
+    <!-- JS -->
+    <script>
+      // Leaflet map
+      const map = L.map("map").setView([35.7596, -5.8339], 12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+      }).addTo(map);
+
+      // Onglet Connexion / Inscription
+      const signInBtn = document.getElementById("signInTab");
+      const signUpBtn = document.getElementById("signUpTab");
+      const signInForm = document.getElementById("signInForm");
+      const signUpForm = document.getElementById("signUpForm");
+
+      signInBtn.onclick = () => {
+        signInBtn.classList.add("active");
+        signUpBtn.classList.remove("active");
+        signInForm.classList.add("active");
+        signUpForm.classList.remove("active");
+      };
+
+      signUpBtn.onclick = () => {
+        signUpBtn.classList.add("active");
+        signInBtn.classList.remove("active");
+        signUpForm.classList.add("active");
+        signInForm.classList.remove("active");
+      };
+
+      // Traduction dynamique (optionnel à développer)
+      document
+        .getElementById("language")
+        .addEventListener("change", function () {
+          const lang = this.value;
+          alert("🔤 Changement de langue en cours : " + lang.toUpperCase());
+          // → Implémentation future : switch labels, placeholders, etc.
+        });
+    </script>
+  </body>
+</html>

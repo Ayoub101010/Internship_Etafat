@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard - PPR</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/535/535137.png"
+            alt="logo"
+          />
+          <h2>PPR</h2>
+        </div>
+        <nav>
+          <ul>
+            <li><i class="fas fa-chart-line"></i> Dashboard</li>
+            <li><i class="fas fa-box"></i> Collectes</li>
+            <li><i class="fas fa-chart-pie"></i> Statistiques</li>
+            <li><i class="fas fa-cog"></i> Paramètres</li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <div class="top-bar">
+          <span>Agent terrain</span>
+          <input type="checkbox" />
+        </div>
+
+        <div class="dashboard">
+          <div class="map" id="map"></div>
+
+          <div class="stats">
+            <div class="card">📦 Collecte<br /><strong>146</strong></div>
+            <div class="card">📍 Zones<br /><strong>5</strong></div>
+            <div class="card">
+              <canvas id="syncChart" width="80" height="80"></canvas>
+              <p>Sync</p>
+            </div>
+          </div>
+
+          <div class="bottom-section">
+            <div class="chart-box">
+              <canvas id="barChart"></canvas>
+            </div>
+            <div class="chart-box">
+              <canvas id="pieChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
