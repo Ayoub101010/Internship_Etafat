@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connexion – PPRCollecte</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #3b82f6, #10b981);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 16px;
+      }
+
+      .login-container {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .logo-container {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(145deg, #a0e7ff, #c2ffd9);
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        position: relative;
+      }
+      .sync-inside {
+        position: absolute;
+        top: 0.5px;
+        right: 0.5px;
+        font-size: 14px;
+        color: #4caf50;
+        transform: rotate(15deg);
+      }
+
+      .pin {
+        width: 25px;
+        height: 25px;
+        background-color: #2196f3;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        position: relative;
+      }
+
+      .pin::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 7px;
+        left: 7px;
+      }
+
+      .text {
+        margin-top: 8px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #1b1b1b;
+      }
+
+      h2 {
+        text-align: center;
+        font-size: 1.3rem;
+        color: #0f172a;
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 8px;
+        background-color: #334155;
+        color: #f1f5f9;
+        font-size: 1rem;
+      }
+
+      input::placeholder {
+        color: #94a3b8;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+      }
+
+      .actions a {
+        color: #38bdf8;
+        text-decoration: none;
+      }
+
+      .login-btn {
+        margin-top: 1.5rem;
+        width: 100%;
+        background-color: #38bdf8;
+        border: none;
+        padding: 0.75rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #0f172a;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .login-btn:hover {
+        background-color: #0ea5e9;
+      }
+
+      @media (max-width: 400px) {
+        .logo-container {
+          width: 70px;
+          height: 70px;
+        }
+
+        h2 {
+          font-size: 1.1rem;
+        }
+
+        .login-btn {
+          font-size: 0.95rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <!-- Logo stylisé -->
+      <div class="logo-container">
+        <div class="pin"></div>
+        <div class="sync-inside">🛰️</div>
+        <div class="text">PPRCollecte</div>
+      </div>
+
+      <h2>Connexion à PPRCollecte</h2>
+
+      <form id="loginForm">
+        <label for="email">Adresse e-mail</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="exemple@domaine.com"
+          required
+        />
+
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" placeholder="••••••••" required />
+
+        <div class="actions">
+          <label><input type="checkbox" id="remember" /> Se souvenir</label>
+          <a href="#">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" class="login-btn">Se connecter</button>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          if (email === "admin@example.com" && password === "123456") {
+            alert("Connexion réussie !");
+            // Redirection vers carte.html ou autre
+          } else {
+            alert("Identifiants incorrects.");
+          }
+        });
+    </script>
+  </body>
+</html>

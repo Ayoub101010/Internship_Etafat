@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PPRCollect – Carte</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body,
+      html {
+        height: 100%;
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f0f8ff;
+      }
+
+      #app {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-bar {
+        background-color: #1976d2;
+        color: white;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .top-bar .profile {
+        display: flex;
+        align-items: center;
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        background-color: white;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .connect {
+        background-color: #ffffff33;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .connect:hover {
+        background-color: #ffffff55;
+      }
+
+      #map {
+        flex: 1;
+        position: relative;
+        background: url("https://tile.openstreetmap.org/0/0/0.png") center/cover
+          no-repeat;
+      }
+
+      .position-marker {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+      }
+
+      .fab {
+        position: absolute;
+        bottom: 90px;
+        right: 20px;
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        font-size: 32px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .fab:hover {
+        background-color: #1565c0;
+      }
+
+      .status-bar {
+        background-color: #e3f2fd;
+        text-align: center;
+        font-size: 13px;
+        padding: 6px;
+        color: #0d47a1;
+      }
+
+      .bottom-bar {
+        background-color: #fff;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+      }
+
+      .bottom-bar button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: transform 0.1s ease;
+      }
+
+      .bottom-bar button:hover {
+        transform: scale(1.05);
+      }
+
+      .save-btn {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .sync-btn {
+        background-color: #2196f3;
+        color: white;
+      }
+
+      .menu-btn {
+        background-color: #757575;
+        color: white;
+      }
+
+      .legend {
+        background-color: #f9f9f9;
+        padding: 6px;
+        font-size: 12px;
+        text-align: center;
+        color: #555;
+        border-top: 1px solid #ddd;
+      }
+
+      .menu-drawer {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 85%;
+        max-width: 400px;
+        height: 100%;
+        background: #fff;
+        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+        transition: right 0.3s ease;
+        z-index: 999;
+        border-top-left-radius: 18px;
+        border-bottom-left-radius: 18px;
+      }
+
+      .menu-drawer.open {
+        right: 0;
+      }
+
+      .menu-content {
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .menu-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .menu-header h2 {
+        font-size: 20px;
+        color: #1976d2;
+        margin: 0;
+      }
+
+      .menu-header span {
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .user-info {
+        background: #e3f2fd;
+        padding: 12px;
+        margin: 16px 0;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .menu-list {
+        list-style: none;
+        padding: 0;
+        flex-grow: 1;
+      }
+
+      .menu-list li {
+        padding: 12px 8px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .menu-list li:hover {
+        background: #f5faff;
+      }
+
+      @media (max-width: 480px) {
+        .top-bar {
+          font-size: 14px;
+          padding: 10px 12px;
+        }
+        .bottom-bar button {
+          font-size: 13px;
+          padding: 8px 10px;
+        }
+        .fab {
+          width: 48px;
+          height: 48px;
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="top-bar">
+        <div class="profile">
+          <div class="avatar" title="Avatar utilisateur"></div>
+          <span>Agent Terrain</span>
+        </div>
+        <button class="connect" onclick="alert('Connexion utilisateur')">
+          Se déconnecter
+        </button>
+      </div>
+
+      <div id="map" aria-label="Carte interactive">
+        <div class="position-marker" title="Position actuelle"></div>
+        <button
+          class="fab"
+          aria-label="Nouvelle collecte"
+          onclick="alert('Ouvrir le formulaire')"
+        >
+          +
+        </button>
+      </div>
+
+      <div class="status-bar" aria-live="polite">
+        📡 GPS: Activé | 🔄 Sync: 11h30 | 🌐 En ligne
+      </div>
+
+      <div class="bottom-bar">
+        <button class="save-btn" onclick="alert('Sauvegarde locale')">
+          💾 Sauvegarder
+        </button>
+        <button class="sync-btn" onclick="alert('Synchronisation')">
+          🔄 Synchroniser
+        </button>
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+      </div>
+
+      <div class="legend">
+        ➕ Nouvelle collecte | 📍 Position GPS | 🔄 Sync offline/online
+      </div>
+    </div>
+
+    <div class="menu-drawer" id="menuDrawer">
+      <div class="menu-content">
+        <div class="menu-header">
+          <h2>☰ Menu</h2>
+          <span onclick="toggleMenu()">&times;</span>
+        </div>
+        <div class="user-info">
+          <p><strong>🔐 Profil utilisateur</strong></p>
+          <p>Nom : Agent X<br />ID : 12345</p>
+        </div>
+        <ul class="menu-list">
+          <li onclick="alert('Déconnexion...')">🚪 Se déconnecter</li>
+          <li onclick="alert('Modifier mot de passe')">
+            🔑 Modifier le mot de passe
+          </li>
+          <li onclick="alert('Historique')">🕓 Historique des collectes</li>
+          <li onclick="alert('Dernière sync')">
+            📡 Dernière sync : 21/08/2025
+          </li>
+          <li onclick="alert('Paramètres')">⚙️ Paramètres</li>
+          <li onclick="alert('Langue')">🌐 Langue : FR</li>
+          <li onclick="alert('Coordonnées')">
+            📍 Coordonnées : cartésiennes ou DMS
+          </li>
+          <li onclick="alert('Aide')">❓ Aide & à propos</li>
+          <li onclick="alert('Contact')">📧 support@pprcollecte.org</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      function toggleMenu() {
+        document.getElementById("menuDrawer").classList.toggle("open");
+      }
+    </script>
+  </body>
+</html>
