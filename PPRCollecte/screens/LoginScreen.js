@@ -8,6 +8,8 @@ import {
   Alert,
   Switch,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -17,25 +19,27 @@ export default function LoginScreen({ navigation }) {
   const handleLogin = () => {
     if (email === "admin@example.com" && password === "123456") {
       Alert.alert("✅ Connexion réussie !");
-      navigation?.navigate?.("Home"); // navigation si elle est passée
+      navigation?.navigate?.("Home");
     } else {
       Alert.alert("❌ Identifiants incorrects");
     }
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={["#3b82f6", "#10b981"]} style={styles.container}>
       <View style={styles.loginBox}>
-        {/* Logo */}
-        <View style={styles.logoContainer}>
-          <View style={styles.pin}></View>
+        {/* Logo avec gradient et icône localisation */}
+        <LinearGradient
+          colors={["#e0f7ff", "#ccfbf1"]}
+          style={styles.logoContainer}
+        >
+          <FontAwesome5 name="map-marker-alt" size={32} color="#2196f3" />
           <Text style={styles.syncIcon}>🛰</Text>
           <Text style={styles.logoText}>PPRCollecte</Text>
-        </View>
+        </LinearGradient>
 
         <Text style={styles.title}>Connexion à PPRCollecte</Text>
 
-        {/* Email */}
         <Text style={styles.label}>Adresse e-mail</Text>
         <TextInput
           placeholder="exemple@domaine.com"
@@ -43,9 +47,9 @@ export default function LoginScreen({ navigation }) {
           keyboardType="email-address"
           value={email}
           onChangeText={setEmail}
+          placeholderTextColor="#cbd5e1"
         />
 
-        {/* Mot de passe */}
         <Text style={styles.label}>Mot de passe</Text>
         <TextInput
           placeholder="••••••••"
@@ -53,9 +57,9 @@ export default function LoginScreen({ navigation }) {
           style={styles.input}
           value={password}
           onChangeText={setPassword}
+          placeholderTextColor="#cbd5e1"
         />
 
-        {/* Switch & lien */}
         <View style={styles.actions}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Switch value={remember} onValueChange={setRemember} />
@@ -64,21 +68,19 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.link}>Mot de passe oublié ?</Text>
         </View>
 
-        {/* Bouton */}
         <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
           <Text style={{ color: "#0f172a", fontWeight: "bold" }}>
             Se connecter
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#3b82f6",
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
   loginBox: {
     backgroundColor: "#fff",
     padding: 24,
-    borderRadius: 16,
+    borderRadius: 20,
     width: "100%",
     maxWidth: 400,
     shadowColor: "#000",
@@ -98,19 +100,11 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 20,
-    backgroundColor: "#a0e7ff",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 16,
     alignSelf: "center",
+    marginBottom: 16,
     position: "relative",
-  },
-  pin: {
-    width: 25,
-    height: 25,
-    backgroundColor: "#2196f3",
-    borderRadius: 50,
-    transform: [{ rotate: "-45deg" }],
   },
   syncIcon: {
     position: "absolute",
@@ -136,6 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 4,
     fontSize: 15,
+    color: "#1e293b",
   },
   input: {
     backgroundColor: "#334155",
