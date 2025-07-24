@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,17 +11,35 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5 } from "@expo/vector-icons";
 
+import { useDatabase } from "../services/db";
+
 export default function LoginScreen({ navigation }) {
+  const { initDB, insertDummyUser, loginUser } = useDatabase();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
 
-  const handleLogin = () => {
-    if (email === "admin@example.com" && password === "123456") {
-      Alert.alert("✅ Connexion réussie !");
-      navigation?.navigate?.("Home");
-    } else {
-      Alert.alert("❌ Identifiants incorrects");
+  useEffect(() => {
+    initDB().then(insertDummyUser).catch(console.log);
+  }, []);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Veuillez remplir tous les champs.");
+      return;
+    }
+
+    try {
+      const user = await loginUser(email, password);
+      if (user) {
+        Alert.alert("✅ Connexion réussie !");
+        navigation.navigate("Home");
+      } else {
+        Alert.alert("❌ Identifiants incorrects");
+      }
+    } catch (error) {
+      Alert.alert("Erreur lors de la connexion");
+      console.error(error);
     }
   };
 
